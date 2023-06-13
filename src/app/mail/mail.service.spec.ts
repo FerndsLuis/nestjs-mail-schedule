@@ -5,6 +5,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { MailService } from './mail.service';
 import { Repository } from 'typeorm';
 import { FindAllMailDto } from './dto/find-mail.dto';
+import { MailStatusEnum } from './enum/mail-status.enum';
 
 describe('MailService', () => {
   let mailService: MailService;
@@ -24,6 +25,8 @@ describe('MailService', () => {
             createQueryBuilder: jest.fn().mockReturnThis(),
             andWhere: jest.fn(),
             getMany,
+            findOneByOrFail: jest.fn(),
+            merge: jest.fn(),
           },
         },
       ],
@@ -64,9 +67,27 @@ describe('MailService', () => {
       expect(result).toHaveLength(2);
     });
 
-    it('shoud return a filtered mail list with sucess', async () => {
+    it('shoud return a filtered mail list with dueDate', async () => {
       // Arange
-      const params: FindAllMailDto = { dueDateLte: '2023-02-22T10:00:00Z' };
+      const params: Partial<FindAllMailDto> = { dueDateLte: '2023-02-22T10:00:00Z' };
+      const mailEntityMockList = [
+        {
+          id: '1',
+          dueDate: '2023-02-25T10:00:00Z',
+        },
+      ] as MailEntity[];
+      getMany.mockReturnValueOnce(mailEntityMockList);
+
+      // Act
+      const result = await mailService.findAll(params);
+
+      // Assert
+      expect(result).toHaveLength(1);
+    });
+
+    it('shoud return a filtered mail list with WAITING status', async () => {
+      // Arange
+      const params: Partial<FindAllMailDto> = { status: MailStatusEnum.WAITING };
       const mailEntityMockList = [
         {
           id: '1',
@@ -111,6 +132,17 @@ describe('MailService', () => {
       expect(result).toBeDefined();
       expect(mailRepository.create).toBeCalledTimes(1);
       expect(mailRepository.save).toBeCalledTimes(1);
+    });
+  });
+
+  describe('update status', () => {
+    it('should update mail status with success', async () => {
+      //Arrange
+      const id = '1';
+      //Act
+      const result = await mailService.updateStatus(id, MailStatusEnum.SENT);
+      //Assert
+      expect(result).toBeUndefined;
     });
   });
 });
