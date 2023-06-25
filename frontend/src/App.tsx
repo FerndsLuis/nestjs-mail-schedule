@@ -1,9 +1,5 @@
-import { Nav } from 'components';
+import { AppRouters } from 'router';
 
 export default function App() {
-  return (
-    <div>
-      <Nav />
-    </div>
-  );
+  return <AppRouters />;
 }
