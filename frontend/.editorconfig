@@ -1,0 +1,4 @@
+root = true
+
+[*]
+ident_size = 2
