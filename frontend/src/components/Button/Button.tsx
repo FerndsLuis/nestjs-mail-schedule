@@ -2,11 +2,12 @@ import classNames from 'classnames';
 import React from 'react';
 
 type Props = {
+  type?: 'button' | 'submit' | 'reset';
   variant?: 'default' | 'primary' | 'light' | 'dark';
   children: React.ReactNode;
 };
 
-export function Button({ variant, children }: Props) {
+export function Button({ type, variant, children }: Props) {
   let bgColor = 'text-black';
   if (variant === 'dark') bgColor = 'bg-primaryDark text-white';
   if (variant === 'primary')
@@ -15,7 +16,10 @@ export function Button({ variant, children }: Props) {
   if (variant === 'light') bgColor = 'bg-primaryLight text-white';
 
   return (
-    <button className={classNames('py-2 px-4 rounded-md font-bold', bgColor)}>
+    <button
+      type={type}
+      className={classNames('py-2 px-4 rounded-md font-bold', bgColor)}
+    >
       {children}
     </button>
   );
