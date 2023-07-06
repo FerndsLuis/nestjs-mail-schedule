@@ -1,6 +1,7 @@
 import { Button, DateTimePicker, Nav, RichInput } from 'components';
 import { IWriteNoewPage } from 'interfaces';
 import { FormProvider, useForm } from 'react-hook-form';
+import { MailsService } from 'services';
 import { WriteNowResolver } from 'validations';
 
 export function WriteNowPage() {
@@ -11,8 +12,12 @@ export function WriteNowPage() {
     handleSubmit,
   } = formMethods;
 
-  function onSubmit(values: any) {
-    console.log('🚀 ~ file: WriteNowPage.tsx:8 ~ onSubmit ~ values:', values);
+  async function onSubmit(values: IWriteNoewPage) {
+    const { status, data } = await MailsService.sendEmail(values);
+
+    if (status === 201) {
+      console.log(data);
+    }
   }
 
   return (
