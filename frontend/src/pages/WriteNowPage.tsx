@@ -10,13 +10,14 @@ export function WriteNowPage() {
     formState: { errors },
     register,
     handleSubmit,
+    reset,
   } = formMethods;
 
   async function onSubmit(values: IWriteNoewPage) {
-    const { status, data } = await MailsService.sendEmail(values);
+    const { status } = await MailsService.sendEmail(values);
 
     if (status === 201) {
-      console.log(data);
+      reset();
     }
   }
 
