@@ -14,7 +14,11 @@ export function WriteNowPage() {
   } = formMethods;
 
   async function onSubmit(values: IWriteNoewPage) {
-    const { status } = await MailsService.sendEmail(values);
+    const { status, data } = await MailsService.sendEmail(values);
+    console.log(
+      '🚀 ~ file: WriteNowPage.tsx:18 ~ onSubmit ~ data:',
+      data.dueDate
+    );
 
     if (status === 201) {
       reset();

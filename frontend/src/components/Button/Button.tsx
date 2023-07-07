@@ -5,9 +5,10 @@ type Props = {
   type?: 'button' | 'submit' | 'reset';
   variant?: 'default' | 'primary' | 'light' | 'dark';
   children: React.ReactNode;
+  onClick?: VoidFunction;
 };
 
-export function Button({ type, variant, children }: Props) {
+export function Button({ type, variant, children, onClick }: Props) {
   let bgColor = 'text-black';
   if (variant === 'dark') bgColor = 'bg-primaryDark text-white';
   if (variant === 'primary')
@@ -18,7 +19,8 @@ export function Button({ type, variant, children }: Props) {
   return (
     <button
       type={type}
-      className={classNames('py-2 px-4 rounded-md font-bold', bgColor)}
+      onClick={onClick}
+      className={classNames('py-2 px-4 rounded-md text-sm', bgColor)}
     >
       {children}
     </button>

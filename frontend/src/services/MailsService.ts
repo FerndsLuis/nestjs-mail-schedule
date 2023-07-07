@@ -1,6 +1,7 @@
-import { ISendEmail } from 'interfaces';
+import { ISendEmail, ISendEmailResponse } from 'interfaces';
 import { Api } from 'providers';
 
-const sendEmail = (data: ISendEmail) => Api.post('/api/v1/mails', data);
+const sendEmail = (data: ISendEmail) =>
+  Api.post<ISendEmailResponse>('/api/v1/mails', data);
 
 export const MailsService = { sendEmail };
